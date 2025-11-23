@@ -50,24 +50,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Contact Form Handling
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(contactForm);
-            const data = Object.fromEntries(formData);
-            
-            // Here you would typically send the data to a server
-            // For now, we'll just show an alert
-            alert('Thank you for your message! We will get back to you soon.\n\nNote: This is a demo form. In production, this would send an email.');
-            
-            // Reset form
-            contactForm.reset();
-        });
-    }
+    // FAQ Accordion Functionality
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        if (question) {
+            question.addEventListener('click', function() {
+                // Close other open items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('active')) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        }
+    });
 
     // Application Link Placeholder
     const applicationLink = document.getElementById('application-link');
@@ -77,5 +76,21 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Application portal link will be provided by the client. Please contact us directly for now.');
         });
     }
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(e) {
+        const navMenu = document.querySelector('.nav-menu');
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        
+        if (navMenu && mobileMenuToggle && navMenu.classList.contains('active')) {
+            if (!navMenu.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+                navMenu.classList.remove('active');
+                const spans = mobileMenuToggle.querySelectorAll('span');
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
+        }
+    });
 });
 
